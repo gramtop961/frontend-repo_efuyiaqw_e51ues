@@ -1,4 +1,5 @@
 import { ShoppingCart, Star } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const products = [
   {
@@ -63,14 +64,21 @@ const products = [
   },
 ];
 
-function ProductCard({ product }) {
+function ProductCard({ product, index }) {
   return (
-    <div className="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm transition hover:shadow-md">
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.98 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, delay: index * 0.06, ease: 'easeOut' }}
+      className="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm transition hover:shadow-xl hover:-translate-y-1"
+    >
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+          loading="lazy"
         />
         <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 shadow">
           {product.tag}
@@ -93,28 +101,34 @@ function ProductCard({ product }) {
             <p className="text-xs text-slate-500">incl. taxes</p>
           </div>
         </div>
-        <button className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
+        <button className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2">
           <ShoppingCart className="h-4 w-4" />
           Add to cart
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 export default function ProductGrid() {
   return (
-    <section id="products" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-      <div className="flex items-end justify-between gap-4">
+    <section id="products" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="flex items-end justify-between gap-4"
+      >
         <div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Curated essentials</h2>
           <p className="mt-1 text-slate-600">Top picks to make your room comfy, organized, and ready from day one.</p>
         </div>
         <a href="#contact" className="hidden sm:inline-flex rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Need help?</a>
-      </div>
+      </motion.div>
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {products.map((p) => (
-          <ProductCard key={p.id} product={p} />
+        {products.map((p, idx) => (
+          <ProductCard key={p.id} product={p} index={idx} />
         ))}
       </div>
     </section>
